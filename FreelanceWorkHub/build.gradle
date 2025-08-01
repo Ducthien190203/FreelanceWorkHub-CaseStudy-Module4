@@ -1,0 +1,46 @@
+// === 1. build.gradle ===
+plugins {
+    id 'java'
+    id 'war'
+}
+
+group 'vn.codegym'
+version '1.0-SNAPSHOT'
+
+sourceCompatibility = '1.8'
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    compileOnly('javax.servlet:javax.servlet-api:4.0.1')
+
+    // JDBC + JPA + Hibernate
+    implementation 'mysql:mysql-connector-java:8.0.33'
+    implementation 'org.springframework.data:spring-data-jpa:2.7.10'
+    implementation 'org.springframework:spring-orm:5.3.32'
+    implementation 'org.hibernate:hibernate-core:5.6.15.Final'
+
+    // Thymeleaf Template Engine
+    implementation 'org.thymeleaf:thymeleaf:3.1.1.RELEASE'
+    implementation 'org.thymeleaf:thymeleaf-spring5:3.1.1.RELEASE'
+
+    // Spring Security
+    implementation 'org.springframework.security:spring-security-web:5.8.5'
+    implementation 'org.springframework.security:spring-security-config:5.8.5'
+
+    // Servlet + JSP
+    providedCompile 'javax.servlet:javax.servlet-api:4.0.1'
+    implementation 'javax.servlet:jstl:1.2'
+
+    // Spring MVC
+    implementation 'org.springframework:spring-webmvc:5.3.32'
+
+    // Logging
+    implementation 'ch.qos.logback:logback-classic:1.2.11'
+}
+
+war {
+    archiveFileName = 'FreelanceWorkHub.war'
+}
