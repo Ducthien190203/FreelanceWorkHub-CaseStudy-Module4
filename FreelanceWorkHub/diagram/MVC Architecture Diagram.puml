@@ -1,0 +1,89 @@
+@startuml
+left to right direction
+skinparam packageStyle rectangle
+skinparam classAttributeIconSize 0
+
+' ==== View Layer ====
+package "Client Side (View)" {
+  [homepage.html]
+  [login.html]
+  [register.html]
+  [browse_jobs.html]
+  [job_details.html]
+  [freelancer_dashboard.html]
+  [employer_dashboard.html]
+  [admin_dashboard.html]
+  [profile.html]
+  [post_job.html]
+  [applicants.html]
+}
+
+' ==== Controller Layer ====
+package "Controller Layer" {
+  [HomeController]
+  [AuthController]
+  [UserController]
+  [JobController]
+  [ApplicationController]
+  [AdminController]
+}
+
+' ==== Service Layer ====
+package "Service Layer" {
+  [UserService]
+  [JobService]
+  [ApplicationService]
+  [AdminService]
+}
+
+' ==== Repository Layer ====
+package "Repository Layer" {
+  [UserRepository]
+  [JobRepository]
+  [ApplicationRepository]
+}
+
+' ==== Model Layer ====
+package "Model Layer" {
+  [User]
+  [Job]
+  [Application]
+  [FreelancerProfile]
+  [EmployerProfile]
+}
+
+' ==== View ↔ Controller ====
+[homepage.html] --> [HomeController]
+[login.html] --> [AuthController]
+[register.html] --> [AuthController]
+[browse_jobs.html] --> [JobController]
+[job_details.html] --> [JobController]
+[freelancer_dashboard.html] --> [UserController]
+[employer_dashboard.html] --> [UserController]
+[admin_dashboard.html] --> [AdminController]
+[profile.html] --> [UserController]
+[post_job.html] --> [JobController]
+[applicants.html] --> [ApplicationController]
+
+' ==== Controller → Service ====
+[HomeController] --> [UserService]
+[AuthController] --> [UserService]
+[UserController] --> [UserService]
+[JobController] --> [JobService]
+[ApplicationController] --> [ApplicationService]
+[AdminController] --> [AdminService]
+
+' ==== Service → Repository ====
+[UserService] --> [UserRepository]
+[JobService] --> [JobRepository]
+[ApplicationService] --> [ApplicationRepository]
+
+' ==== Repository ↔ Model ====
+[UserRepository] --> [User]
+[JobRepository] --> [Job]
+[ApplicationRepository] --> [Application]
+
+' ==== User ↔ Profile ====
+[User] --> [FreelancerProfile]
+[User] --> [EmployerProfile]
+@enduml

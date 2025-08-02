@@ -1,0 +1,116 @@
+@startuml
+hide circle
+skinparam linetype ortho
+skinparam classAttributeIconSize 0
+left to right direction
+
+' ===== Entities =====
+entity "<b>User</b>" as U {
+  *id : int <<PK>>
+  username : varchar
+  password : varchar
+  full_name : varchar
+  email : varchar
+  role : varchar <<FREELANCER / EMPLOYER / ADMIN>>
+  enabled : boolean
+  --
+  + register()
+  + login()
+  + logout()
+}
+
+entity "<b><font color=red>FreelancerProfile</font></b>" as FP {
+  *id : int <<PK>>
+  user_id : int <<FK>>
+  bio : text
+  skills : text
+  location : varchar
+  experience_years : int
+  availability : varchar
+  --
+  + updateProfile()
+  + viewApplications()
+  + saveJob()
+}
+
+entity "<b><font color=red>EmployerProfile</font></b>" as EP {
+  *id : int <<PK>>
+  user_id : int <<FK>>
+  company_name : varchar
+  company_description : text
+  website : varchar
+  location : varchar
+  --
+  + updateCompanyProfile()
+  + postJob()
+  + viewApplicants()
+}
+
+entity "<b><font color=red>Admin</font></b>" as A {
+  *id : int <<PK>>
+  user_id : int <<FK>>
+  --
+  + viewAllUsers()
+  + viewAllJobs()
+  + viewUserDetails()
+  + viewJobDetails()
+  + deactivateUser()
+  + deleteJob()
+}
+
+entity "<b>Job</b>" as J {
+  *id : int <<PK>>
+  employer_id : int <<FK>>
+  title : varchar
+  description : text
+  budget : decimal
+  category : varchar
+  status : varchar
+  created_at : date
+  --
+  + createJob()
+  + editJob()
+  + deleteJob()
+  + viewDetails()
+}
+
+entity "<b>Application</b>" as AP {
+  *id : int <<PK>>
+  job_id : int <<FK>>
+  freelancer_id : int <<FK>>
+  cover_letter : text
+  created_at : date
+  status : varchar
+  --
+  + applyToJob()
+  + cancelApplication()
+  + getStatus()
+}
+
+entity "<b>SavedJob</b>" as SJ {
+  *id : int <<PK>>
+  job_id : int <<FK>>
+  freelancer_id : int <<FK>>
+  saved_at : date
+  --
+  + toggleSave()
+  + unsave()
+}
+
+' ===== Positioning for clear layout =====
+U -down-> FP
+U -down-> EP
+U -down-> A
+
+U -right-> J
+U -right-> AP
+U -right-> SJ
+
+EP -down-> J : "posts"
+FP -down-> AP : "applies"
+FP -down-> SJ : "saves"
+
+J -down-> AP : "has"
+J -down-> SJ : "can_be"
+
+@enduml
