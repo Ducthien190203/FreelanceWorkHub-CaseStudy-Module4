@@ -39,6 +39,9 @@ dependencies {
 
     // Logging
     implementation 'ch.qos.logback:logback-classic:1.2.11'
+    //lombok
+    // https://mvnrepository.com/artifact/org.projectlombok/lombok
+    implementation("org.projectlombok:lombok:1.18.38")
 }
 
 war {
