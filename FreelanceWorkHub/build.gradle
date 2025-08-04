@@ -16,6 +16,9 @@ repositories {
 dependencies {
     compileOnly('javax.servlet:javax.servlet-api:4.0.1')
 
+    implementation 'jakarta.validation:jakarta.validation-api:2.0.2'
+    implementation 'org.hibernate.validator:hibernate-validator:6.0.13.Final'
+
     // JDBC + JPA + Hibernate
     implementation 'mysql:mysql-connector-java:8.0.33'
     implementation 'org.springframework.data:spring-data-jpa:2.7.10'
@@ -25,6 +28,7 @@ dependencies {
     // Thymeleaf Template Engine
     implementation 'org.thymeleaf:thymeleaf:3.1.1.RELEASE'
     implementation 'org.thymeleaf:thymeleaf-spring5:3.1.1.RELEASE'
+    implementation 'org.thymeleaf.extras:thymeleaf-extras-springsecurity5:3.1.1.RELEASE' // Added this line
 
     // Spring Security
     implementation 'org.springframework.security:spring-security-web:5.8.5'

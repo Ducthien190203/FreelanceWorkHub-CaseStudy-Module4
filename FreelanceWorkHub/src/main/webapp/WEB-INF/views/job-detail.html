@@ -1,0 +1,211 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title th:text="#{job_detail.title} + ' - ' + #{app.name}"></title>
+    <!-- Bootstrap 5 CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+    <!-- Google Fonts (Inter) -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <!-- Bootstrap Icons -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="/static/css/style.css">
+</head>
+<body>
+
+    <!-- Header -->
+    <header class="bg-light border-bottom shadow-sm sticky-top">
+        <nav class="navbar navbar-expand-lg">
+            <div class="container">
+                <a class="navbar-brand d-flex align-items-center" th:href="@{/}">
+                    <div class="logo-icon-wrapper">
+                        <i class="bi bi-briefcase-fill"></i>
+                    </div>
+                    <span class="fw-bold text-primary" th:text="#{app.name}"></span>
+                </a>
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+                <div class="collapse navbar-collapse" id="navbarNav">
+                    <ul class="navbar-nav mx-auto">
+                        <li class="nav-item">
+                            <a class="nav-link" th:href="@{/}"><i class="bi bi-house-door-fill me-1"></i><span th:text="#{nav.home}"></span></a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link active" th:href="@{/jobs}"><i class="bi bi-briefcase-fill me-1"></i><span th:text="#{nav.find_jobs}"></span></a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" th:href="@{/about}"><i class="bi bi-people-fill me-1"></i><span th:text="#{nav.about_us}"></span></a>
+                        </li>
+                    </ul>
+                    <div class="d-flex align-items-center" sec:authorize="isAnonymous()">
+                        <a th:href="@{/login}" class="btn btn-ghost me-2" th:text="#{auth.sign_in}"></a>
+                        <a th:href="@{/register}" class="btn btn-primary" th:text="#{auth.get_started}"></a>
+                    </div>
+                    <div class="d-flex align-items-center" sec:authorize="isAuthenticated()">
+                        <a th:href="@{/dashboard}" class="btn btn-ghost me-2" th:text="#{nav.dashboard}"></a>
+                        <a th:href="@{/logout}" class="btn btn-primary" th:text="#{auth.logout}"></a>
+                    </div>
+                </div>
+            </div>
+        </nav>
+    </header>
+
+    <main class="py-5">
+        <div class="container">
+            <div class="mb-4">
+                <a th:href="@{/jobs}" class="text-decoration-none text-muted d-flex align-items-center"><i class="bi bi-arrow-left me-2"></i><span th:text="#{job_detail.back_to_jobs}"></span></a>
+            </div>
+
+            <div class="row g-4">
+                <!-- Main Content -->
+                <div class="col-lg-8">
+                    <!-- Job Header -->
+                    <div class="card mb-4">
+                        <div class="card-body">
+                            <div class="d-flex align-items-start mb-3">
+                                <img th:src="${job.employer.employerProfile.avatarUrl}" alt="Company Logo" class="rounded-circle me-3" width="60" height="60">
+                                <div class="flex-grow-1">
+                                    <h2 class="fw-bold" th:text="${job.title}"></h2>
+                                    <p class="text-muted" th:text="${job.employer.employerProfile.companyName}"></p>
+                                </div>
+                                <div sec:authorize="hasRole('FREELANCER')">
+                                    <form th:if="${!isSaved}" th:action="@{/freelancer/saved-jobs/{jobId}/save(jobId=${job.id})}" method="post" style="display:inline;">
+                                        <button type="submit" class="btn btn-light"><i class="bi bi-heart"></i></button>
+                                    </form>
+                                    <form th:if="${isSaved}" th:action="@{/freelancer/saved-jobs/{jobId}/delete(jobId=${job.id})}" method="post" style="display:inline;">
+                                        <button type="submit" class="btn btn-danger"><i class="bi bi-heart-fill"></i></button>
+                                    </form>
+                                </div>
+                            </div>
+                            <div class="d-flex flex-wrap text-muted small gap-3">
+                                <span><i class="bi bi-geo-alt-fill me-1"></i><span th:text="${job.employer.employerProfile.location}"></span></span>
+                                <span><i class="bi bi-clock-fill me-1"></i><span th:text="#{job_detail.full_time}"></span></span>
+                                <span><i class="bi bi-calendar-event-fill me-1"></i><span th:text="#{job_detail.posted_on} + ' ' + ${#dates.format(job.createdAt, 'dd MMM yyyy')}"></span></span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Job Description -->
+                    <div class="card mb-4">
+                        <div class="card-body">
+                            <h4 class="fw-semibold mb-3" th:text="#{job_detail.job_description}"></h4>
+                            <p th:text="${job.description}"></p>
+                            <h5 class="fw-semibold mt-4 mb-2" th:text="#{job_detail.key_responsibilities}"></h5>
+                            <ul>
+                                <li th:each="responsibility : ${job.responsibilities}" th:text="${responsibility}"></li>
+                            </ul>
+                            <h5 class="fw-semibold mt-4 mb-2" th:text="#{job_detail.requirements}"></h5>
+                            <ul>
+                                <li th:each="requirement : ${job.requirements}" th:text="${requirement}"></li>
+                            </ul>
+                        </div>
+                    </div>
+
+                    <!-- Required Skills -->
+                    <div class="card">
+                        <div class="card-body">
+                            <h4 class="fw-semibold mb-3" th:text="#{job_detail.required_skills}"></h4>
+                            <div class="d-flex flex-wrap gap-2">
+                                <span class="badge fs-6 fw-normal bg-secondary-subtle text-secondary-emphasis rounded-pill" th:each="skill : ${job.skills}" th:text="${skill}"></span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Sidebar -->
+                <aside class="col-lg-4">
+                    <!-- Apply Section -->
+                    <div class="card mb-4">
+                        <div class="card-body">
+                            <h4 class="fw-semibold mb-3" th:text="#{job_detail.apply_for_this_job}"></h4>
+                            <div sec:authorize="isAnonymous()">
+                                <p class="text-muted small" th:text="#{job_detail.login_to_apply_message}"></p>
+                                <div class="d-grid gap-2">
+                                    <a th:href="@{/login}" class="btn btn-primary btn-lg" th:text="#{job_detail.login_to_apply}"></a>
+                                    <button class="btn btn-outline-warning" type="button"><i class="bi bi-bookmark-fill me-2"></i><span th:text="#{job_detail.save_job}"></span></button>
+                                </div>
+                            </div>
+                            <div sec:authorize="hasRole('FREELANCER')">
+                                <form th:action="@{/jobs/{id}/apply(id=${job.id})}" method="post">
+                                    <div class="mb-3">
+                                        <label for="coverLetter" class="form-label" th:text="#{job_detail.cover_letter}"></label>
+                                        <textarea class="form-control" id="coverLetter" name="coverLetter" rows="5" th:placeholder="#{job_detail.cover_letter_placeholder}" required></textarea>
+                                    </div>
+                                    <div class="mb-3">
+                                        <label for="proposedRate" class="form-label" th:text="#{job_detail.proposed_rate}"></label>
+                                        <input type="number" class="form-control" id="proposedRate" name="proposedRate" step="0.01" th:placeholder="#{job_detail.proposed_rate_placeholder}" required>
+                                    </div>
+                                    <div class="d-grid gap-2">
+                                        <button type="submit" class="btn btn-primary btn-lg" th:text="#{job_detail.apply_now}"></button>
+                                        <form th:if="${!isSaved}" th:action="@{/freelancer/saved-jobs/{jobId}/save(jobId=${job.id})}" method="post" style="display:inline;">
+                                            <button type="submit" class="btn btn-outline-warning w-100"><i class="bi bi-bookmark-fill me-2"></i><span th:text="#{job_detail.save_job}"></span></button>
+                                        </form>
+                                        <form th:if="${isSaved}" th:action="@{/freelancer/saved-jobs/{jobId}/delete(jobId=${job.id})}" method="post" style="display:inline;">
+                                            <button type="submit" class="btn btn-danger w-100"><i class="bi bi-heart-fill me-2"></i><span th:text="#{job_detail.unsave_job}"></span></button>
+                                        </form>
+                                    </div>
+                                </form>
+                            </div>
+                            <div sec:authorize="hasRole('EMPLOYER')">
+                                <p class="text-muted small" th:text="#{job_detail.employer_cannot_apply}"></p>
+                            </div>
+                            <div th:if="${param.applied}" class="alert alert-success mt-3">
+                                <span th:text="#{job_detail.application_success}"></span>
+                            </div>
+                            <div th:if="${param.saved}" class="alert alert-success mt-3">
+                                <span th:text="#{job_detail.job_saved_success}"></span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Job Summary -->
+                    <div class="card mb-4">
+                        <div class="card-body">
+                            <h4 class="fw-semibold mb-3" th:text="#{job_detail.job_summary}"></h4>
+                            <ul class="list-unstyled text-muted">
+                                <li class="d-flex justify-content-between mb-2"><span><span th:text="#{job_detail.budget}"></span>:</span> <span class="fw-medium text-dark" th:text="${job.budget}"></span></li>
+                                <li class="d-flex justify-content-between mb-2"><span><span th:text="#{job_detail.duration}"></span>:</span> <span class="fw-medium text-dark" th:text="${job.duration}"></span></li>
+                                <li class="d-flex justify-content-between mb-2"><span><span th:text="#{job_detail.experience}"></span>:</span> <span class="fw-medium text-dark" th:text="${job.experience}"></span></li>
+                                <li class="d-flex justify-content-between mb-2"><span><span th:text="#{job_detail.location}"></span>:</span> <span class="fw-medium text-dark" th:text="${job.employer.employerProfile.location}"></span></li>
+                                <li class="d-flex justify-content-between"><span><span th:text="#{job_detail.applicants}"></span>:</span> <span class="fw-medium text-dark" th:text="${job.applicantsCount}"></span></li>
+                            </ul>
+                        </div>
+                    </div>
+
+                    <!-- Company Info -->
+                    <div class="card">
+                        <div class="card-body">
+                            <h4 class="fw-semibold mb-3" th:text="#{job_detail.about_company(job.employer.employerProfile.companyName)}"></h4>
+                            <p class="text-muted small" th:text="${job.employer.employerProfile.companyDescription}"></p>
+                        </div>
+                    </div>
+                </aside>
+            </div>
+        </div>
+    </main>
+
+    <!-- Footer -->
+    <footer class="bg-light border-top py-4 mt-auto">
+        <div class="container">
+            <div class="d-flex flex-column flex-sm-row justify-content-between align-items-center">
+                <p class="text-muted mb-2 mb-sm-0" th:text="#{footer.copyright}"></p>
+                <div class="d-flex">
+                    <a th:href="@{/privacy}" class="text-muted text-decoration-none me-3" th:text="#{footer.privacy_policy}"></a>
+                    <a th:href="@{/terms}" class="text-muted text-decoration-none me-3" th:text="#{footer.terms}"></a>
+                    <a th:href="@{/contact}" class="text-muted text-decoration-none" th:text="#{footer.contact}"></a>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Bootstrap 5 JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
+    <!-- Custom JS -->
+    <script src="/static/js/script.js"></script>
+</body>
+</html>

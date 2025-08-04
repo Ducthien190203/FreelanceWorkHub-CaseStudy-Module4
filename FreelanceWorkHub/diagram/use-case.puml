@@ -1,0 +1,61 @@
+@startuml
+left to right direction
+skinparam packageStyle rectangle
+skinparam usecase {
+  BackgroundColor #EEF
+  BorderColor Black
+  ArrowColor Black
+  ActorBorderColor Black
+  ActorFontColor Black
+  ActorBackgroundColor #DDD
+}
+
+actor Visitor
+actor Freelancer
+actor Employer
+actor Admin
+
+package "FreelanceWorkHub System" {
+
+  ' --- Visitor ---
+  usecase "Đăng ký / Đăng nhập" as UC_RegisterLogin
+
+  ' --- Freelancer ---
+  usecase "Tạo / chỉnh sửa hồ sơ" as UC_EditProfile
+  usecase "Tìm kiếm Job" as UC_SearchJobs
+  usecase "Ứng tuyển Job" as UC_ApplyJob
+  usecase "Xem trạng thái đơn ứng tuyển" as UC_ViewApplicationStatus
+
+  ' --- Employer ---
+  usecase "Đăng Job mới" as UC_PostJob
+  usecase "Xem đơn ứng tuyển" as UC_ViewApplications
+  usecase "Chấp nhận / từ chối đơn" as UC_ApproveReject
+  usecase "Đánh giá Freelancer" as UC_ReviewFreelancer
+
+  ' --- Admin ---
+  usecase "Xem danh sách User / Job" as UC_ViewAll
+  usecase "Khóa / mở tài khoản" as UC_BlockUser
+
+  ' Visitor
+  Visitor --> UC_RegisterLogin
+
+  ' Freelancer
+  Freelancer --> UC_RegisterLogin
+  Freelancer --> UC_EditProfile
+  Freelancer --> UC_SearchJobs
+  Freelancer --> UC_ApplyJob
+  Freelancer --> UC_ViewApplicationStatus
+
+  ' Employer
+  Employer --> UC_RegisterLogin
+  Employer --> UC_PostJob
+  Employer --> UC_ViewApplications
+  Employer --> UC_ApproveReject
+  Employer --> UC_ReviewFreelancer
+
+  ' Admin
+  Admin --> UC_ViewAll
+  Admin --> UC_BlockUser
+}
+
+@enduml

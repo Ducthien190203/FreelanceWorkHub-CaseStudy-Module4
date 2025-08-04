@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title th:text="#{applicant_detail.title} + ' - ' + #{app.name}"></title>
+    <!-- Bootstrap 5 CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+    <!-- Google Fonts (Inter) -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <!-- Bootstrap Icons -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="/static/css/style.css">
+</head>
+<body>
+
+    <!-- Header will be dynamically included in a real application -->
+    <header class="bg-white border-bottom shadow-sm sticky-top">
+        <nav class="navbar navbar-expand-lg">
+            <div class="container">
+                <a class="navbar-brand d-flex align-items-center" th:href="@{/}">
+                    <div class="logo-icon-wrapper">
+                        <i class="bi bi-briefcase-fill"></i>
+                    </div>
+                    <span class="fw-bold text-primary" th:text="#{app.name}"></span>
+                </a>
+            </div>
+        </nav>
+    </header>
+
+    <main class="py-5">
+        <div class="container">
+            <div class="mb-4">
+                <a th:href="@{/employer/applicants}" class="text-decoration-none text-muted d-flex align-items-center"><i class="bi bi-arrow-left me-2"></i><span th:text="#{applicant_detail.back_to_applicants}"></span></a>
+            </div>
+
+            <div class="row g-4">
+                <!-- Main Content -->
+                <div class="col-lg-8">
+                    <!-- Job Info -->
+                    <div class="card mb-4">
+                        <div class="card-header bg-white d-flex justify-content-between align-items-center">
+                            <h4 class="fw-bold mb-0" th:text="#{applicant_detail.application_for} + ': ' + ${application.job.title}"></h4>
+                            <span class="badge" th:classappend="${application.status == 'Pending' ? 'bg-warning-subtle text-warning-emphasis' : (application.status == 'Accepted' ? 'bg-success-subtle text-success-emphasis' : 'bg-danger-subtle text-danger-emphasis')}" th:text="${application.status}"></span>
+                        </div>
+                        <div class="card-body">
+                            <div class="d-flex flex-wrap text-muted small gap-4">
+                                <span><i class="bi bi-currency-dollar me-1"></i><span th:text="#{applicant_detail.budget} + ': ' + ${application.job.budget} + '/hr'"></span></span>
+                                <span><i class="bi bi-calendar-event-fill me-1"></i><span th:text="#{applicant_detail.applied} + ': ' + ${#dates.format(application.createdAt, 'dd MMM yyyy')}"></span></span>
+                                <span><i class="bi bi-cash me-1"></i><span th:text="#{applicant_detail.proposed} + ': ' + ${application.proposedRate} + '/hr'"></span></span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Cover Letter -->
+                    <div class="card">
+                        <div class="card-body">
+                            <h4 class="fw-semibold mb-3" th:text="#{applicant_detail.cover_letter}"></h4>
+                            <p th:text="${application.coverLetter}"></p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Sidebar -->
+                <aside class="col-lg-4">
+                    <!-- Applicant Profile -->
+                    <div class="card mb-4">
+                        <div class="card-body text-center">
+                            <img th:src="${application.freelancer.avatarUrl}" alt="Applicant Avatar" class="rounded-circle mb-3" width="100" height="100">
+                            <h4 class="fw-bold" th:text="${application.freelancer.fullName}"></h4>
+                            <p class="text-muted" th:text="${application.freelancer.freelancerProfile.title}"></p>
+                        </div>
+                        <ul class="list-group list-group-flush">
+                            <li class="list-group-item d-flex justify-content-between"><span><span th:text="#{applicant_detail.rating}"></span>:</span> <span class="fw-medium"><i class="bi bi-star-fill text-warning"></i> 4.9 (<span th:text="#{applicant_detail.reviews(87)}"></span>)</span></li>
+                            <li class="list-group-item d-flex justify-content-between"><span><span th:text="#{applicant_detail.completed_jobs}"></span>:</span> <span class="fw-medium" th:text="${application.freelancer.freelancerProfile.completedJobs}"></span></li>
+                            <li class="list-group-item d-flex justify-content-between"><span><span th:text="#{applicant_detail.location}"></span>:</span> <span class="fw-medium" th:text="${application.freelancer.freelancerProfile.location}"></span></li>
+                        </ul>
+                        <div class="card-body">
+                             <h6 class="fw-semibold mb-2" th:text="#{applicant_detail.skills}"></h6>
+                             <div class="d-flex flex-wrap gap-1">
+                                <span class="badge bg-secondary-subtle text-secondary-emphasis rounded-pill" th:each="skill : ${application.freelancer.freelancerProfile.skills}" th:text="${skill}"></span>
+                             </div>
+                        </div>
+                    </div>
+
+                    <!-- Actions -->
+                    <div class="card">
+                        <div class="card-body">
+                            <h5 class="fw-semibold mb-3" th:text="#{applicant_detail.actions}"></h5>
+                            <div class="d-grid gap-2">
+                                <form th:action="@{/employer/applicants/{id}/accept(id=${application.id})}" method="post">
+                                    <button type="submit" class="btn btn-success w-100" th:text="#{applicant_detail.accept_application}"></button>
+                                </form>
+                                <form th:action="@{/employer/applicants/{id}/reject(id=${application.id})}" method="post">
+                                    <button type="submit" class="btn btn-danger w-100" th:text="#{applicant_detail.reject_application}"></button>
+                                </form>
+                                <button class="btn btn-outline-secondary w-100"><i class="bi bi-chat-dots-fill me-2"></i><span th:text="#{applicant_detail.send_message}"></span></button>
+                            </div>
+                        </div>
+                    </div>
+                </aside>
+            </div>
+        </div>
+    </main>
+
+    <!-- Footer will be dynamically included -->
+
+    <!-- Bootstrap 5 JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
+    <!-- Custom JS -->
+    <script src="/static/js/script.js"></script>
+</body>
+</html>
