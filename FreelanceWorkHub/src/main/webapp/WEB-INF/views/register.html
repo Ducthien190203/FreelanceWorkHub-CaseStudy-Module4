@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title th:text="#{auth.create_account} + ' - ' + #{app.name}"></title>
+    <!-- Bootstrap 5 CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+    <!-- Google Fonts (Inter) -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <!-- Bootstrap Icons -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="/static/css/style.css">
+</head>
+<body class="bg-light">
+    <!-- Header -->
+    <header class="bg-white border-bottom shadow-sm sticky-top">
+        <nav class="navbar navbar-expand-lg">
+            <div class="container">
+                <a class="navbar-brand d-flex align-items-center" th:href="@{/}">
+                    <div class="logo-icon-wrapper">
+                        <i class="bi bi-briefcase-fill"></i>
+                    </div>
+                    <span class="fw-bold text-primary" th:text="#{app.name}"></span>
+                </a>
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+                <div class="collapse navbar-collapse" id="navbarNav">
+                    <ul class="navbar-nav mx-auto">
+                        <li class="nav-item">
+                            <a class="nav-link" th:href="@{/}"><i class="bi bi-house-door-fill me-1"></i><span th:text="#{nav.home}"></span></a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" th:href="@{/jobs}"><i class="bi bi-briefcase-fill me-1"></i><span th:text="#{nav.find_jobs}"></span></a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" th:href="@{/about}"><i class="bi bi-people-fill me-1"></i><span th:text="#{nav.about_us}"></span></a>
+                        </li>
+                    </ul>
+                    <div class="d-flex align-items-center">
+                        <a th:href="@{/login}" class="btn btn-ghost me-2" th:text="#{auth.sign_in}"></a>
+                        <a th:href="@{/register}" class="btn btn-primary active" th:text="#{auth.get_started}"></a>
+                    </div>
+                </div>
+            </div>
+        </nav>
+    </header>
+
+    <main class="d-flex align-items-center py-5">
+        <div class="container">
+            <div class="row justify-content-center">
+                <div class="col-lg-8">
+                    <div class="card shadow-lg">
+                        <div class="card-body p-5">
+                            <div class="text-center mb-4">
+                                <h2 class="fw-bold" th:text="#{auth.create_account}"></h2>
+                                <p class="text-muted" th:text="#{auth.join_and_start_journey}"></p>
+                            </div>
+                            <form th:action="@{/register}" th:object="${user}" method="post" class="needs-validation" novalidate>
+                                <div th:if="${param.success}" class="alert alert-success">
+                                    <span th:text="#{auth.registration_success}"></span>
+                                </div>
+                                <div class="mb-3">
+                                    <label for="fullName" class="form-label" th:text="#{auth.full_name}"></label>
+                                    <input type="text" class="form-control form-control-lg" id="fullName" th:field="*{fullName}" th:placeholder="#{auth.enter_full_name}" required>
+                                    <div class="invalid-feedback" th:if="${#fields.hasErrors('fullName')}" th:errors="*{fullName}"></div>
+                                </div>
+                                <div class="mb-3">
+                                    <label for="email" class="form-label" th:text="#{auth.email_address}"></label>
+                                    <input type="email" class="form-control form-control-lg" id="email" th:field="*{email}" th:placeholder="#{auth.enter_email}" required pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,4}$">
+                                    <div class="invalid-feedback" th:if="${#fields.hasErrors('email')}" th:errors="*{email}"></div>
+                                </div>
+                                <div class="mb-3">
+                                    <label for="password" class="form-label" th:text="#{auth.password}"></label>
+                                    <input type="password" class="form-control form-control-lg" id="password" th:field="*{password}" th:placeholder="#{auth.create_password}" required minlength="6">
+                                    <div class="invalid-feedback" th:if="${#fields.hasErrors('password')}" th:errors="*{password}"></div>
+                                </div>
+                                <div class="mb-4">
+                                    <label for="confirmPassword" class="form-label" th:text="#{auth.confirm_password}"></label>
+                                    <input type="password" class="form-control form-control-lg" id="confirmPassword" th:field="*{confirmPassword}" th:placeholder="#{auth.confirm_your_password}" required>
+                                    <div class="invalid-feedback" th:if="${#fields.hasErrors('confirmPassword')}" th:errors="*{confirmPassword}"></div>
+                                </div>
+
+                                <div class="mb-4">
+                                    <label class="form-label" th:text="#{auth.i_am_a}"></label>
+                                    <div class="row g-2">
+                                        <div class="col-6">
+                                            <div class="form-check role-check-card p-0">
+                                                <input type="radio" class="form-check-input" th:field="*{role}" id="freelancerRadio" value="FREELANCER" required>
+                                                <label class="form-check-label" for="freelancerRadio">
+                                                    <i class="bi bi-person-circle"></i>
+                                                    <span class="role-title" th:text="#{auth.freelancer}"></span>
+                                                    <span class="role-desc" th:text="#{auth.freelancer_desc}"></span>
+                                                </label>
+                                            </div>
+                                        </div>
+                                        <div class="col-6">
+                                            <div class="form-check role-check-card p-0">
+                                                <input type="radio" class="form-check-input" th:field="*{role}" id="employerRadio" value="EMPLOYER" required>
+                                                <label class="form-check-label" for="employerRadio">
+                                                    <i class="bi bi-building"></i>
+                                                    <span class="role-title" th:text="#{auth.employer}"></span>
+                                                    <span class="role-desc" th:text="#{auth.employer_desc}"></span>
+                                                </label>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="invalid-feedback" th:if="${#fields.hasErrors('role')}" th:errors="*{role}"></div>
+                                </div>
+
+                                <div class="d-grid mb-3">
+                                    <button type="submit" class="btn btn-primary btn-lg" th:text="#{auth.create_account}"></button>
+                                </div>
+                                <div class="text-center">
+                                    <p class="text-muted" th:text="#{auth.already_have_account}"><a th:href="@{/login}" th:text="#{auth.sign_in}"></a></p>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Footer -->
+    <footer class="bg-white border-top py-4 mt-auto">
+        <div class="container">
+            <div class="d-flex flex-column flex-sm-row justify-content-between align-items-center">
+                <p class="text-muted mb-2 mb-sm-0" th:text="#{footer.copyright}"></p>
+                <div class="d-flex">
+                    <a th:href="@{/privacy}" class="text-muted text-decoration-none me-3" th:text="#{footer.privacy_policy}"></a>
+                    <a th:href="@{/terms}" class="text-muted text-decoration-none me-3" th:text="#{footer.terms}"></a>
+                    <a th:href="@{/contact}" class="text-muted text-decoration-none" th:text="#{footer.contact}"></a>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Bootstrap 5 JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
+    <!-- Custom JS -->
+    <script src="/static/js/script.js"></script>
+    <script>
+        // JavaScript for password confirmation validation
+        document.addEventListener('DOMContentLoaded', function() {
+            var password = document.getElementById('password');
+            var confirmPassword = document.getElementById('confirmPassword');
+
+            function validatePassword() {
+                if (password.value != confirmPassword.value) {
+                    confirmPassword.setCustomValidity("Passwords Don't Match");
+                } else {
+                    confirmPassword.setCustomValidity('');
+                }
+            }
+
+            password.onchange = validatePassword;
+            confirmPassword.onkeyup = validatePassword;
+        });
+    </script>
+</body>
+</html>

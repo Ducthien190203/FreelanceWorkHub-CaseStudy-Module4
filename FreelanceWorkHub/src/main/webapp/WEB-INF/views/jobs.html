@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title th:text="#{jobs.title} + ' - ' + #{app.name}"></title>
+    <!-- Bootstrap 5 CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+    <!-- Google Fonts (Inter) -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <!-- Bootstrap Icons -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="/static/css/style.css">
+</head>
+<body>
+
+    <!-- Header -->
+    <header class="bg-light border-bottom shadow-sm sticky-top">
+        <nav class="navbar navbar-expand-lg">
+            <div class="container">
+                <a class="navbar-brand d-flex align-items-center" th:href="@{/}">
+                    <div class="logo-icon-wrapper">
+                        <i class="bi bi-briefcase-fill"></i>
+                    </div>
+                    <span class="fw-bold text-primary" th:text="#{app.name}"></span>
+                </a>
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+                <div class="collapse navbar-collapse" id="navbarNav">
+                    <ul class="navbar-nav mx-auto">
+                        <li class="nav-item">
+                            <a class="nav-link" th:href="@{/}"><i class="bi bi-house-door-fill me-1"></i><span th:text="#{nav.home}"></span></a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link active" th:href="@{/jobs}"><i class="bi bi-briefcase-fill me-1"></i><span th:text="#{nav.find_jobs}"></span></a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" th:href="@{/about}"><i class="bi bi-people-fill me-1"></i><span th:text="#{nav.about_us}"></span></a>
+                        </li>
+                    </ul>
+                    <div class="d-flex align-items-center" sec:authorize="isAnonymous()">
+                        <a th:href="@{/login}" class="btn btn-ghost me-2" th:text="#{auth.sign_in}"></a>
+                        <a th:href="@{/register}" class="btn btn-primary" th:text="#{auth.get_started}"></a>
+                    </div>
+                    <div class="d-flex align-items-center" sec:authorize="isAuthenticated()">
+                        <a th:href="@{/dashboard}" class="btn btn-ghost me-2" th:text="#{nav.dashboard}"></a>
+                        <a th:href="@{/logout}" class="btn btn-primary" th:text="#{auth.logout}"></a>
+                    </div>
+                </div>
+            </div>
+        </nav>
+    </header>
+
+    <main class="py-5">
+        <div class="container">
+            <div class="row">
+                <!-- Filters Sidebar -->
+                <aside class="col-lg-3">
+                    <div class="card filter-sidebar">
+                        <div class="card-header d-flex justify-content-between align-items-center">
+                            <h5 class="mb-0" th:text="#{jobs.filters.title}"></h5>
+                            <a th:href="@{/jobs}" class="btn btn-sm btn-link text-decoration-none" th:text="#{jobs.filters.clear_all}"></a>
+                        </div>
+                        <div class="card-body">
+                            <form th:action="@{/jobs}" method="get">
+                                <div class="mb-4">
+                                    <label for="searchInput" class="form-label fw-semibold" th:text="#{jobs.filters.search}"></label>
+                                    <div class="input-group">
+                                        <span class="input-group-text bg-white"><i class="bi bi-search"></i></span>
+                                        <input type="text" class="form-control" id="searchInput" name="keyword" th:placeholder="#{jobs.filters.search_placeholder}" th:value="${keyword}">
+                                    </div>
+                                </div>
+
+                                <div class="mb-4">
+                                    <label for="categorySelect" class="form-label fw-semibold" th:text="#{jobs.filters.category}"></label>
+                                    <select class="form-select" id="categorySelect" name="category">
+                                        <option value="" th:text="#{jobs.filters.all_categories}"></option>
+                                        <option th:each="cat : ${categories}" th:value="${cat}" th:text="${cat}" th:selected="${cat == selectedCategory}"></option>
+                                    </select>
+                                </div>
+
+                                <div class="mb-4">
+                                    <label for="locationSelect" class="form-label fw-semibold" th:text="#{jobs.filters.location}"></label>
+                                    <select class="form-select" id="locationSelect" name="location">
+                                        <option value="" th:text="#{jobs.filters.all_locations}"></option>
+                                        <option th:each="loc : ${locations}" th:value="${loc}" th:text="${loc}" th:selected="${loc == selectedLocation}"></option>
+                                    </select>
+                                </div>
+
+                                <div class="mb-4">
+                                    <label for="minBudget" class="form-label fw-semibold" th:text="#{jobs.filters.min_budget}"></label>
+                                    <input type="number" class="form-control" id="minBudget" name="minBudget" th:value="${minBudget}" placeholder="Min Budget">
+                                </div>
+                                <div class="mb-4">
+                                    <label for="maxBudget" class="form-label fw-semibold" th:text="#{jobs.filters.max_budget}"></label>
+                                    <input type="number" class="form-control" id="maxBudget" name="maxBudget" th:value="${maxBudget}" placeholder="Max Budget">
+                                </div>
+
+                                <div class="d-grid">
+                                    <button type="submit" class="btn btn-primary" th:text="#{jobs.filters.apply_filters}"></button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </aside>
+
+                <!-- Job Listings -->
+                <section class="col-lg-9">
+                    <div class="d-flex flex-column flex-sm-row justify-content-between align-items-start align-items-sm-center mb-4">
+                        <div>
+                            <h2 class="fw-bold" th:text="#{jobs.available_jobs}"></h2>
+                            <p class="text-muted" th:text="#{jobs.found_count(jobPage.totalElements)}"></p>
+                        </div>
+                        <div class="d-flex align-items-center">
+                            <label for="sortBySelect" class="form-label me-2 mb-0" th:text="#{jobs.sort_by}"></label>
+                            <select class="form-select w-auto" id="sortBySelect" onchange="this.form.submit()">
+                                <option value="createdAt,desc" th:selected="${sortBy == 'createdAt' and sortDir == 'desc'}" th:text="#{jobs.sort.newest}"></option>
+                                <option value="budget,desc" th:selected="${sortBy == 'budget' and sortDir == 'desc'}" th:text="#{jobs.sort.highest_budget}"></option>
+                                <option value="avgRating,desc" th:selected="${sortBy == 'avgRating' and sortDir == 'desc'}" th:text="#{jobs.sort.best_rating}"></option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <!-- Job Card -->
+                    <div class="card job-card mb-4" th:each="job : ${jobPage.content}">
+                        <div class="card-body">
+                            <div class="d-flex align-items-start">
+                                <div class="flex-grow-1">
+                                    <div class="d-flex justify-content-between">
+                                        <h5 class="card-title fw-semibold mb-1" th:text="${job.title}"></h5>
+                                        <span class="badge bg-danger" th:if="${job.status == 'Urgent'}" th:text="#{job.status.urgent}"></span>
+                                    </div>
+                                    <p class="text-muted small mb-2" th:text="${job.employer.fullName}"></p>
+                                    <p class="card-text" th:text="${job.description}"></p>
+                                </div>
+                            </div>
+                            <div class="row g-3 text-muted small my-3">
+                                <div class="col-sm-auto"><i class="bi bi-currency-dollar me-1"></i><span th:text="${job.budget}"></span> /hr</div>
+                                <div class="col-sm-auto"><i class="bi bi-geo-alt-fill me-1"></i><span th:text="${job.employer.employerProfile.location}"></span></div>
+                                <div class="col-sm-auto"><i class="bi bi-clock-fill me-1"></i><span th:text="#{job.posted_on} + ' ' + ${#dates.format(job.createdAt, 'dd MMM yyyy')}"></span></div>
+                            </div>
+                            <div class="d-flex flex-wrap gap-2 mb-3">
+                                <span class="badge bg-secondary-subtle text-secondary-emphasis rounded-pill" th:each="skill : ${job.skills}" th:text="${skill}"></span>
+                            </div>
+                            <hr>
+                            <div class="d-flex justify-content-between align-items-center">
+                                <div class="d-flex align-items-center text-muted small">
+                                    <span class="me-3"><i class="bi bi-star-fill text-warning me-1"></i>4.8</span>
+                                    <span th:text="#{job.applicants_count(job.applications.size())}"></span>
+                                </div>
+                                <a th:href="@{/jobs/{id}(id=${job.id})}" class="btn btn-outline-primary"><i class="bi bi-eye-fill me-2"></i><span th:text="#{job.view_details}"></span></a>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Pagination -->
+                    <nav aria-label="Page navigation" th:if="${jobPage.totalPages > 1}">
+                        <ul class="pagination justify-content-center">
+                            <li class="page-item" th:classappend="${jobPage.first ? 'disabled' : ''}">
+                                <a class="page-link" th:href="@{/jobs(page=${jobPage.number - 1}, size=${jobPage.size}, keyword=${keyword}, category=${selectedCategory}, location=${selectedLocation}, minBudget=${minBudget}, maxBudget=${maxBudget}, sortBy=${sortBy}, sortDir=${sortDir})}" th:text="#{pagination.previous}"></a>
+                            </li>
+                            <li class="page-item" th:each="i : ${#numbers.sequence(0, jobPage.totalPages - 1)}" th:classappend="${i == jobPage.number ? 'active' : ''}">
+                                <a class="page-link" th:href="@{/jobs(page=${i}, size=${jobPage.size}, keyword=${keyword}, category=${selectedCategory}, location=${selectedLocation}, minBudget=${minBudget}, maxBudget=${maxBudget}, sortBy=${sortBy}, sortDir=${sortDir})}" th:text="${i + 1}"></a>
+                            </li>
+                            <li class="page-item" th:classappend="${jobPage.last ? 'disabled' : ''}">
+                                <a class="page-link" th:href="@{/jobs(page=${jobPage.number + 1}, size=${jobPage.size}, keyword=${keyword}, category=${selectedCategory}, location=${selectedLocation}, minBudget=${minBudget}, maxBudget=${maxBudget}, sortBy=${sortBy}, sortDir=${sortDir})}" th:text="#{pagination.next}"></a>
+                            </li>
+                        </ul>
+                    </nav>
+                </section>
+            </div>
+        </div>
+    </main>
+
+    <!-- Footer -->
+    <footer class="bg-light border-top py-4 mt-auto">
+        <div class="container">
+            <div class="d-flex flex-column flex-sm-row justify-content-between align-items-center">
+                <p class="text-muted mb-2 mb-sm-0" th:text="#{footer.copyright}"></p>
+                <div class="d-flex">
+                    <a th:href="@{/privacy}" class="text-muted text-decoration-none me-3" th:text="#{footer.privacy_policy}"></a>
+                    <a th:href="@{/terms}" class="text-muted text-decoration-none me-3" th:text="#{footer.terms}"></a>
+                    <a th:href="@{/contact}" class="text-muted text-decoration-none" th:text="#{footer.contact}"></a>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Bootstrap 5 JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
+    <!-- Custom JS -->
+    <script src="/static/js/script.js"></script>
+</body>
+</html>
