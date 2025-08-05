@@ -48,7 +48,7 @@
                                     <h2 class="fw-bold" th:text="${job.title}"></h2>
                                     <div class="d-flex flex-wrap text-muted small gap-3 mt-2">
                                         <span><i class="bi bi-calendar-event-fill me-1"></i><span th:text="#{employer_job_detail.posted_on} + ' ' + ${#dates.format(job.createdAt, 'dd MMM yyyy')}"></span></span>
-                                        <span><i class="bi bi-people-fill me-1"></i><span th:text="#{employer_job_detail.applicants_count(job.applications.size())}"></span></span>
+                                        <span><i class="bi bi-people-fill me-1"></i><span th:text="#{employer_job_detail.applicants_count}(job.applications.size())"></span></span>
                                     </div>
                                 </div>
                                 <span class="badge" th:classappend="${job.status == 'Active' ? 'bg-success-subtle text-success-emphasis' : 'bg-secondary-subtle text-secondary-emphasis'}" th:text="${job.status}"></span>
@@ -97,7 +97,7 @@
                     <!-- Recent Applicants -->
                     <div class="card">
                         <div class="card-header bg-white">
-                            <h4 class="fw-semibold mb-0" th:text="#{employer_job_detail.recent_applicants}"></h4>
+                            <h4 class="fw-semibold mb-0" th:text="#{employer_dashboard.table.applicants}"></h4>
                         </div>
                         <ul class="list-group list-group-flush">
                             <!-- Applicant Item -->
