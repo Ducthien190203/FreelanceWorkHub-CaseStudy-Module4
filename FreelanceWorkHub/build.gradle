@@ -28,6 +28,7 @@ dependencies {
     // Thymeleaf Template Engine
     implementation 'org.thymeleaf:thymeleaf:3.1.1.RELEASE'
     implementation 'org.thymeleaf:thymeleaf-spring5:3.1.1.RELEASE'
+    implementation 'org.thymeleaf.extras:thymeleaf-extras-springsecurity5:3.1.1.RELEASE' // Added this line
 
     // Spring Security
     implementation 'org.springframework.security:spring-security-web:5.8.5'
@@ -42,9 +43,6 @@ dependencies {
 
     // Logging
     implementation 'ch.qos.logback:logback-classic:1.2.11'
-    //lombok
-    // https://mvnrepository.com/artifact/org.projectlombok/lombok
-    implementation("org.projectlombok:lombok:1.18.38")
 }
 
 war {

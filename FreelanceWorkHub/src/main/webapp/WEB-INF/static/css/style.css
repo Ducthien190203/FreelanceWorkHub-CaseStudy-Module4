@@ -1,0 +1,215 @@
+:root {
+    --bs-primary: #0d6efd;
+    --bs-secondary: #6c757d;
+    --bs-light: #f8f9fa;
+    --bs-dark: #212529;
+    --bs-body-color: #212529;
+    --bs-body-bg: #f9f9f9;
+    --bs-border-color: #dee2e6;
+    --bs-body-font-family: 'Inter', sans-serif;
+    --bs-card-border-color: var(--bs-border-color);
+    --bs-card-bg: #ffffff;
+}
+
+body {
+    background-color: var(--bs-body-bg);
+    color: var(--bs-body-color);
+    font-family: var(--bs-body-font-family);
+}
+
+.navbar-brand {
+    font-size: 1.25rem;
+}
+
+.logo-icon-wrapper {
+    width: 2rem;
+    height: 2rem;
+    background-color: var(--bs-primary);
+    border-radius: 0.5rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-right: 0.5rem;
+}
+
+.logo-icon-wrapper i {
+    color: white;
+    font-size: 1.1rem;
+}
+
+.nav-link {
+    color: #6c757d;
+    font-weight: 500;
+    transition: color 0.2s ease-in-out;
+}
+
+.nav-link.active,
+.nav-link:hover {
+    color: var(--bs-primary);
+}
+
+.btn-ghost {
+    color: #6c757d;
+    background-color: transparent;
+    border-color: transparent;
+}
+
+.btn-ghost:hover {
+    background-color: #e9ecef;
+    color: #212529;
+}
+
+.hero-section {
+    background-color: #f0f6ff; /* A light blue gradient-like background */
+}
+
+.input-group .form-control:focus {
+    box-shadow: none;
+    border-color: var(--bs-primary);
+}
+
+.category-card {
+    transition: transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
+    cursor: pointer;
+}
+
+.category-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.15);
+}
+
+.category-icon-wrapper {
+    width: 3rem;
+    height: 3rem;
+    background-color: #e7f0ff;
+    border-radius: 0.75rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.category-icon-wrapper i {
+    font-size: 1.5rem;
+    color: var(--bs-primary);
+}
+
+.step-icon-wrapper {
+    width: 4rem;
+    height: 4rem;
+    background-color: var(--bs-primary);
+    color: white;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.25rem;
+    font-weight: 700;
+}
+
+footer a:hover {
+    color: var(--bs-primary) !important;
+}
+
+/* Job Listing Page Styles */
+.filter-sidebar .card-header {
+    background-color: transparent;
+}
+
+.job-card {
+    transition: transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
+}
+
+.job-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.1);
+}
+
+.job-card .card-title {
+    color: var(--bs-dark);
+    text-decoration: none;
+    transition: color 0.2s ease-in-out;
+}
+
+.job-card .card-title:hover {
+    color: var(--bs-primary);
+}
+
+/* Job Detail Page Styles */
+.fw-medium {
+    font-weight: 500;
+}
+
+/* Register Page Styles */
+.role-check-card {
+    position: relative;
+}
+
+/* Dashboard Styles */
+.dashboard-sidebar {
+    width: 280px;
+}
+
+.dashboard-sidebar .nav-link {
+    color: var(--bs-dark);
+    font-weight: 500;
+    padding: 0.75rem 1rem;
+    border-radius: 0.375rem;
+}
+
+.dashboard-sidebar .nav-link.active,
+.dashboard-sidebar .nav-link:hover {
+    background-color: #e7f0ff;
+    color: var(--bs-primary);
+}
+
+.dashboard-sidebar .nav-link.active i,
+.dashboard-sidebar .nav-link:hover i {
+    color: var(--bs-primary);
+}
+
+.role-check-card .form-check-input {
+    position: absolute;
+    top: 1rem;
+    left: 1rem;
+    width: 1.25em;
+    height: 1.25em;
+}
+
+.role-check-card .form-check-label {
+    display: block;
+    padding: 1.5rem 1rem 1rem 1rem;
+    border: 1px solid var(--bs-border-color);
+    border-radius: 0.375rem;
+    text-align: center;
+    cursor: pointer;
+    transition: border-color 0.2s ease-in-out, background-color 0.2s ease-in-out;
+}
+
+.role-check-card .form-check-label:hover {
+    border-color: var(--bs-primary);
+    background-color: #f0f6ff;
+}
+
+.role-check-card .form-check-input:checked + .form-check-label {
+    border-color: var(--bs-primary);
+    background-color: #e7f0ff;
+    box-shadow: 0 0 0 2px rgba(13, 110, 253, 0.25);
+}
+
+.role-check-card i {
+    font-size: 2rem;
+    color: var(--bs-primary);
+    margin-bottom: 0.5rem;
+}
+
+.role-check-card .role-title {
+    display: block;
+    font-weight: 600;
+    color: var(--bs-dark);
+}
+
+.role-check-card .role-desc {
+    display: block;
+    font-size: 0.875rem;
+    color: var(--bs-secondary);
+}
