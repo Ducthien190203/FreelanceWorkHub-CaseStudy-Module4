@@ -15,7 +15,7 @@ import java.util.List;
 public interface JobRepository extends JpaRepository<Job, Long> {
      long countByEmployerAndStatus(User employer, JobStatus status);
      List<Job> findByEmployer(User employer);
-     List<Job> findTop5ByOrderByCreatedAtDesc();
+     List<Job> findTop5ByOrderByCreatedDateDesc();
 
-    Page<Job> findAllByTitleContainsOrCategoryContainsOrBudgetBefore(String title, JobCategory category, double budgetBefore,Pageable pageable);
+    Page<Job> findAllByTitleContainsOrDescriptionContains(String title, String description,Pageable pageable);
 }
