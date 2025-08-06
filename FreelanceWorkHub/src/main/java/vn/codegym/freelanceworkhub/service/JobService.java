@@ -50,7 +50,7 @@ public class JobService {
         return jobRepository.findByEmployer(employer);
     }
     public Page<Job> searchJobs(String keyword, Pageable pageable) {
-        return jobRepository.findAllByTitleContainsOrDescriptionContains(keyword, keyword, pageable);
+        return jobRepository.findAllByTitleContainsOrDescriptionContainsOrLocationContains(keyword, keyword, keyword, pageable);
     }
 
 }

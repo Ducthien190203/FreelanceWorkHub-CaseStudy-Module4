@@ -40,6 +40,8 @@ public class Job {
 
     private Date createdDate;
 
+    private String location;
+
     @OneToMany(mappedBy = "job", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Application> applications = new ArrayList<>();
 

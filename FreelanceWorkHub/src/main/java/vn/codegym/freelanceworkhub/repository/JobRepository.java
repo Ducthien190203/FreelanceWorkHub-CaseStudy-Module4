@@ -17,5 +17,5 @@ public interface JobRepository extends JpaRepository<Job, Long> {
      List<Job> findByEmployer(User employer);
      List<Job> findTop5ByOrderByCreatedDateDesc();
 
-    Page<Job> findAllByTitleContainsOrDescriptionContains(String title, String description,Pageable pageable);
+    Page<Job> findAllByTitleContainsOrDescriptionContainsOrLocationContains(String title, String description, String location,Pageable pageable);
 }
