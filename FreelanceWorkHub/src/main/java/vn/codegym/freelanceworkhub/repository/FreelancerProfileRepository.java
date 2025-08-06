@@ -1,11 +1,10 @@
 package vn.codegym.freelanceworkhub.repository;
 
-import vn.codegym.freelanceworkhub.entity.FreelancerProfile;
-import vn.codegym.freelanceworkhub.entity.User;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
-
+import vn.codegym.freelanceworkhub.model.FreelancerProfile;
+import vn.codegym.freelanceworkhub.model.User;
 @Repository
-public interface FreelancerProfileRepository extends JpaRepository<FreelancerProfile, Integer> {
+public interface FreelancerProfileRepository extends JpaRepository<FreelancerProfile, Long> {
     FreelancerProfile findByUser(User user);
 }

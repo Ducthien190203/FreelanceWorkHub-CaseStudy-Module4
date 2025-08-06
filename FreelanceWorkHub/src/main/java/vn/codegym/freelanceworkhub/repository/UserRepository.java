@@ -1,14 +1,10 @@
 package vn.codegym.freelanceworkhub.repository;
 
-import vn.codegym.freelanceworkhub.entity.User;
 import org.springframework.data.jpa.repository.JpaRepository;
-import org.springframework.stereotype.Repository;
+import vn.codegym.freelanceworkhub.model.User;
 
-import java.util.Date;
-
-@Repository
-public interface UserRepository extends JpaRepository<User, Integer> {
-    User findByEmail(String email);
+public interface UserRepository extends JpaRepository<User, Long> {
     User findByUsername(String username);
-    long countByCreatedAtAfter(Date date);
+    User findByEmail(String email);
+
 }
