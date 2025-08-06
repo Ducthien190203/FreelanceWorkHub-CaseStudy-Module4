@@ -4,10 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
-import vn.codegym.freelanceworkhub.model.ApplicationStatus;
-import vn.codegym.freelanceworkhub.model.Job;
-import vn.codegym.freelanceworkhub.model.JobStatus;
-import vn.codegym.freelanceworkhub.model.User;
+import vn.codegym.freelanceworkhub.model.*;
 import vn.codegym.freelanceworkhub.repository.ApplicationRepository;
 import vn.codegym.freelanceworkhub.repository.JobRepository;
 
@@ -49,8 +46,8 @@ public class JobService {
     public List<Job> findJobsByEmployer(User employer) {
         return jobRepository.findByEmployer(employer);
     }
-    public Page<Job> searchJobs(String keyword, Pageable pageable) {
-        return jobRepository.findAllByTitleContainsOrDescriptionContainsOrLocationContains(keyword, keyword, keyword, pageable);
+    public Page<Job> searchJobs(String keyword, Double budget, JobCategory jobCategory,String location, Pageable pageable) {
+        return jobRepository.searchJobs(keyword,keyword,budget,jobCategory,location,pageable);
     }
 
 }
