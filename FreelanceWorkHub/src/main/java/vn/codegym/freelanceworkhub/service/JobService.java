@@ -33,6 +33,7 @@ public class JobService {
     public void deleteJob(Job job) {
         jobRepository.delete(job);
     }
+    public void deleteJobById(long id) {jobRepository.deleteById(id);}
 
     public long countCompletedJobsByFreelancer(User freelancer) {
         return applicationRepository.countByFreelancerAndStatus(freelancer, ApplicationStatus.ACCEPTED);

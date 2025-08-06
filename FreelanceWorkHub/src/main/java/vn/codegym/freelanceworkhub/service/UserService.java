@@ -19,6 +19,7 @@ import vn.codegym.freelanceworkhub.repository.UserRepository;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
@@ -36,7 +37,7 @@ public class UserService implements UserDetailsService {
         this.employerProfileRepository = employerProfileRepository;
     }
 
-    public User save (UserRegistrationDto registrationDto) {
+        public User save (UserRegistrationDto registrationDto) {
         User user = new User();
         user.setPassword(passwordEncoder.encode(registrationDto.getPassword()));
         user.setUsername(registrationDto.getUsername());
@@ -56,6 +57,12 @@ public class UserService implements UserDetailsService {
             employerProfileRepository.save(profile);
         }
         return savedUser;
+    }
+    public User findByUsername(String username) {
+        return userRepository.findByUsername(username);
+    }
+    public Optional<User> findById(Long id) {
+        return userRepository.findById(id);
     }
     public User findByEmail(String email) {
         return userRepository.findByEmail(email);
