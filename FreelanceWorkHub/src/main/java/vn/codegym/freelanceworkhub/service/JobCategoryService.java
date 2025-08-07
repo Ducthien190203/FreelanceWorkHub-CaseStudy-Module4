@@ -23,4 +23,9 @@ public class JobCategoryService {
     public void delete(Long id) {
         jobCategoryRepository.deleteById(id);
     }
+
+    public JobCategory findByNameContains(String name) {
+
+       return jobCategoryRepository.findByNameContains(name);
+    }
 }

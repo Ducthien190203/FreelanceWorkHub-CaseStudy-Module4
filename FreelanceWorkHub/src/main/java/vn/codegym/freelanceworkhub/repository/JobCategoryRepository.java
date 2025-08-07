@@ -6,4 +6,5 @@ import vn.codegym.freelanceworkhub.model.JobCategory;
 
 @Repository
 public interface JobCategoryRepository extends JpaRepository<JobCategory, Long> {
+    JobCategory findByNameContains(String name);
 }
