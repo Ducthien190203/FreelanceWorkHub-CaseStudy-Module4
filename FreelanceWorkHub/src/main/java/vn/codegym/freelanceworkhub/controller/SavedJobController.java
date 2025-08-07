@@ -1,0 +1,52 @@
+package vn.codegym.freelanceworkhub.controller;
+
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import vn.codegym.freelanceworkhub.model.Job;
+import vn.codegym.freelanceworkhub.model.SavedJob;
+import vn.codegym.freelanceworkhub.model.User;
+import vn.codegym.freelanceworkhub.service.JobService;
+import vn.codegym.freelanceworkhub.service.SavedJobService;
+import vn.codegym.freelanceworkhub.service.UserService;
+
+import java.time.LocalDate;
+import java.util.Optional;
+
+@Controller
+@RequestMapping("/freelancer/saved-jobs")
+public class SavedJobController {
+    private final SavedJobService savedJobService;
+    private final JobService jobService;
+    private final UserService userService;
+
+    public SavedJobController(SavedJobService savedJobService, JobService jobService, UserService userService) {
+        this.savedJobService = savedJobService;
+        this.jobService = jobService;
+        this.userService = userService;
+    }
+    @PostMapping("/{jobId}/save")
+    public String save(@PathVariable Long jobId) {
+      Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+      User currentUser = userService.findByUsername(auth.getName());
+
+        Optional<Job> jobOptional = jobService.findJobById(jobId);
+        if (jobOptional.isPresent() && currentUser != null) {
+            Job job = jobOptional.get();
+            SavedJob savedJob = new SavedJob();
+            savedJob.setJob(job);
+            savedJob.setFreelancer(currentUser);
+            savedJob.setSavedAt(LocalDate.now());
+        }
+        return "redirect:/jobs/{jobId}?saved";
+    }
+    @PostMapping("/{id}/delete")
+    public String delete(@PathVariable Long id) {
+        savedJobService.deleteSavedJob(id);
+        return "redirect:/feelancer/saved-jobs";
+    }
+}
