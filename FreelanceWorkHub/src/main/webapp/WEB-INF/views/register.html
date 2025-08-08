@@ -26,26 +26,6 @@
                     </div>
                     <span class="fw-bold text-primary" th:text="#{app.name}"></span>
                 </a>
-                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
-                    <span class="navbar-toggler-icon"></span>
-                </button>
-                <div class="collapse navbar-collapse" id="navbarNav">
-                    <ul class="navbar-nav mx-auto">
-                        <li class="nav-item">
-                            <a class="nav-link" th:href="@{/}"><i class="bi bi-house-door-fill me-1"></i><span th:text="#{nav.home}"></span></a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" th:href="@{/jobs}"><i class="bi bi-briefcase-fill me-1"></i><span th:text="#{nav.find_jobs}"></span></a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" th:href="@{/about}"><i class="bi bi-people-fill me-1"></i><span th:text="#{nav.about_us}"></span></a>
-                        </li>
-                    </ul>
-                    <div class="d-flex align-items-center">
-                        <a th:href="@{/login}" class="btn btn-ghost me-2" th:text="#{auth.sign_in}"></a>
-                        <a th:href="@{/register}" class="btn btn-primary active" th:text="#{auth.get_started}"></a>
-                    </div>
-                </div>
             </div>
         </nav>
     </header>
@@ -60,7 +40,7 @@
                                 <h2 class="fw-bold" th:text="#{auth.create_account}"></h2>
                                 <p class="text-muted" th:text="#{auth.join_and_start_journey}"></p>
                             </div>
-                            <form th:action="@{/register}" th:object="${user}" method="post" class="needs-validation" novalidate>
+                            <form th:action="@{/login}" th:object="${user}" method="post" class="needs-validation" novalidate>
                                 <div th:if="${param.success}" class="alert alert-success">
                                     <span th:text="#{auth.registration_success}"></span>
                                 </div>
@@ -116,7 +96,10 @@
                                     <button type="submit" class="btn btn-primary btn-lg" th:text="#{auth.create_account}"></button>
                                 </div>
                                 <div class="text-center">
-                                    <p class="text-muted" th:text="#{auth.already_have_account}"><a th:href="@{/login}" th:text="#{auth.sign_in}"></a></p>
+                                    <p class="text-muted">
+                                        <span th:text="#{auth.already_have_account}"></span>
+                                        <a th:href="@{/login}" th:text="#{auth.sign_in}"></a>
+                                    </p>
                                 </div>
                             </form>
                         </div>
@@ -147,8 +130,8 @@
     <script>
         // JavaScript for password confirmation validation
         document.addEventListener('DOMContentLoaded', function() {
-            var password = document.getElementById('password');
-            var confirmPassword = document.getElementById('confirmPassword');
+            let password = document.getElementById('password');
+            let confirmPassword = document.getElementById('confirmPassword');
 
             function validatePassword() {
                 if (password.value != confirmPassword.value) {
@@ -157,7 +140,6 @@
                     confirmPassword.setCustomValidity('');
                 }
             }
-
             password.onchange = validatePassword;
             confirmPassword.onkeyup = validatePassword;
         });

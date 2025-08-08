@@ -21,7 +21,7 @@
     <header class="bg-light border-bottom shadow-sm sticky-top">
         <nav class="navbar navbar-expand-lg">
             <div class="container">
-                <a class="navbar-brand d-flex align-items-center" th:href="@{/}">
+                <a class="navbar-brand d-flex align-items-center" th:href="@{/WEB-INF/static}">
                     <div class="logo-icon-wrapper">
                         <i class="bi bi-briefcase-fill"></i>
                     </div>
@@ -33,10 +33,10 @@
                 <div class="collapse navbar-collapse" id="navbarNav">
                     <ul class="navbar-nav mx-auto">
                         <li class="nav-item">
-                            <a class="nav-link" th:href="@{/}"><i class="bi bi-house-door-fill me-1"></i><span th:text="#{nav.home}"></span></a>
+                            <a class="nav-link" th:href="@{/WEB-INF/static}"><i class="bi bi-house-door-fill me-1"></i><span th:text="#{nav.home}"></span></a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link active" th:href="@{/jobs}"><i class="bi bi-briefcase-fill me-1"></i><span th:text="#{nav.find_jobs}"></span></a>
+                            <a class="nav-link active" th:href="@{/WEB-INF/views/jobs}"><i class="bi bi-briefcase-fill me-1"></i><span th:text="#{nav.find_jobs}"></span></a>
                         </li>
                         <li class="nav-item">
                             <a class="nav-link" th:href="@{/about}"><i class="bi bi-people-fill me-1"></i><span th:text="#{nav.about_us}"></span></a>
@@ -63,10 +63,10 @@
                     <div class="card filter-sidebar">
                         <div class="card-header d-flex justify-content-between align-items-center">
                             <h5 class="mb-0" th:text="#{jobs.filters.title}"></h5>
-                            <a th:href="@{/jobs}" class="btn btn-sm btn-link text-decoration-none" th:text="#{jobs.filters.clear_all}"></a>
+                            <a th:href="@{/WEB-INF/views/jobs}" class="btn btn-sm btn-link text-decoration-none" th:text="#{jobs.filters.clear_all}"></a>
                         </div>
                         <div class="card-body">
-                            <form th:action="@{/jobs}" method="get">
+                            <form th:action="@{/WEB-INF/views/jobs}" method="get">
                                 <div class="mb-4">
                                     <label for="searchInput" class="form-label fw-semibold" th:text="#{jobs.filters.search}"></label>
                                     <div class="input-group">
@@ -161,13 +161,13 @@
                     <nav aria-label="Page navigation" th:if="${jobPage.totalPages > 1}">
                         <ul class="pagination justify-content-center">
                             <li class="page-item" th:classappend="${jobPage.first ? 'disabled' : ''}">
-                                <a class="page-link" th:href="@{/jobs(page=${jobPage.number - 1}, size=${jobPage.size}, keyword=${keyword}, category=${selectedCategory}, location=${selectedLocation}, minBudget=${minBudget}, maxBudget=${maxBudget}, sortBy=${sortBy}, sortDir=${sortDir})}" th:text="#{pagination.previous}"></a>
+                                <a class="page-link" th:href="@{/WEB-INF/views/jobs(page=${jobPage.number - 1}, size=${jobPage.size}, keyword=${keyword}, category=${selectedCategory}, location=${selectedLocation}, minBudget=${minBudget}, maxBudget=${maxBudget}, sortBy=${sortBy}, sortDir=${sortDir})}" th:text="#{pagination.previous}"></a>
                             </li>
                             <li class="page-item" th:each="i : ${#numbers.sequence(0, jobPage.totalPages - 1)}" th:classappend="${i == jobPage.number ? 'active' : ''}">
-                                <a class="page-link" th:href="@{/jobs(page=${i}, size=${jobPage.size}, keyword=${keyword}, category=${selectedCategory}, location=${selectedLocation}, minBudget=${minBudget}, maxBudget=${maxBudget}, sortBy=${sortBy}, sortDir=${sortDir})}" th:text="${i + 1}"></a>
+                                <a class="page-link" th:href="@{/WEB-INF/views/jobs(page=${i}, size=${jobPage.size}, keyword=${keyword}, category=${selectedCategory}, location=${selectedLocation}, minBudget=${minBudget}, maxBudget=${maxBudget}, sortBy=${sortBy}, sortDir=${sortDir})}" th:text="${i + 1}"></a>
                             </li>
                             <li class="page-item" th:classappend="${jobPage.last ? 'disabled' : ''}">
-                                <a class="page-link" th:href="@{/jobs(page=${jobPage.number + 1}, size=${jobPage.size}, keyword=${keyword}, category=${selectedCategory}, location=${selectedLocation}, minBudget=${minBudget}, maxBudget=${maxBudget}, sortBy=${sortBy}, sortDir=${sortDir})}" th:text="#{pagination.next}"></a>
+                                <a class="page-link" th:href="@{/WEB-INF/views/jobs(page=${jobPage.number + 1}, size=${jobPage.size}, keyword=${keyword}, category=${selectedCategory}, location=${selectedLocation}, minBudget=${minBudget}, maxBudget=${maxBudget}, sortBy=${sortBy}, sortDir=${sortDir})}" th:text="#{pagination.next}"></a>
                             </li>
                         </ul>
                     </nav>

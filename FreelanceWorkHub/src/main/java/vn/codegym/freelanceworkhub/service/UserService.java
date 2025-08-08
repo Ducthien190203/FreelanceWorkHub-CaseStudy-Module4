@@ -1,6 +1,5 @@
 package vn.codegym.freelanceworkhub.service;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -16,10 +15,9 @@ import vn.codegym.freelanceworkhub.repository.EmployerProfileRepository;
 import vn.codegym.freelanceworkhub.repository.FreelancerProfileRepository;
 import vn.codegym.freelanceworkhub.repository.UserRepository;
 
-import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
-import java.util.stream.Collectors;
+import java.util.Optional;
 
 @Service
 public class UserService implements UserDetailsService {
@@ -56,6 +54,12 @@ public class UserService implements UserDetailsService {
             employerProfileRepository.save(profile);
         }
         return savedUser;
+    }
+    public User findByUsername(String username) {
+        return userRepository.findByUsername(username);
+    }
+    public Optional<User> findById(Long id) {
+        return userRepository.findById(id);
     }
     public User findByEmail(String email) {
         return userRepository.findByEmail(email);
@@ -96,5 +100,4 @@ public class UserService implements UserDetailsService {
     public EmployerProfile saveEmployerProfile(EmployerProfile employerProfile) {
         return employerProfileRepository.save(employerProfile);
     }
-
 }

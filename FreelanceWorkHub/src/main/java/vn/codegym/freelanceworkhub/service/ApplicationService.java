@@ -37,7 +37,7 @@ public class ApplicationService {
         return applicationRepository.countByFreelancerAndStatus(freelancer, ApplicationStatus.PENDING);
     }
     public List<Application> findApplicationsByFreelancer(User freelancer){
-        return applicationRepository.findByFreelancerOrderByCreatedAtDesc(freelancer);
+        return applicationRepository.findByFreelancerOrderByCreatedDateDesc(freelancer);
 
     }
     public long countTotalApplicationsForJobs(List<Job> jobs){

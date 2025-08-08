@@ -15,14 +15,14 @@
     <!-- Bootstrap Icons -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
     <!-- Custom CSS -->
-    <link rel="stylesheet" href="/static/css/style.css">
+    <link rel="stylesheet" href="/css/style.css">
 </head>
 <body>
 <!-- Header -->
 <header class="bg-light border-bottom shadow-sm sticky-top">
     <nav class="navbar navbar-expand-lg">
         <div class="container">
-            <a class="navbar-brand d-flex align-items-center" th:href="@{/}">
+            <a class="navbar-brand d-flex align-items-center" th:href="@{/home}">
                 <div class="logo-icon-wrapper">
                     <i class="bi bi-briefcase-fill"></i>
                 </div>
@@ -35,7 +35,7 @@
             <div class="collapse navbar-collapse" id="navbarNav">
                 <ul class="navbar-nav mx-auto">
                     <li class="nav-item">
-                        <a class="nav-link active" th:href="@{/}"><i class="bi bi-house-door-fill me-1"></i><span
+                        <a class="nav-link active" th:href="@{/home}"><i class="bi bi-house-door-fill me-1"></i><span
                                 th:text="#{nav.home}"></span></a>
                     </li>
                     <li class="nav-item">
@@ -73,8 +73,6 @@
                     <input class="form-control border-start-0" th:placeholder="#{hero.search_placeholder}" type="text">
                     <button class="btn btn-primary px-4" th:text="#{hero.search_button}" type="button"></button>
                 </div>
-
-                <a class="btn btn-primary btn-lg" th:href="@{/register}" th:text="#{auth.get_started}"></a>
             </div>
         </div>
     </section>

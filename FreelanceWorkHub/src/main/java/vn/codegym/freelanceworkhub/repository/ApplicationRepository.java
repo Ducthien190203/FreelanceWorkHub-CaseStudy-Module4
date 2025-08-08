@@ -13,7 +13,7 @@ import java.util.List;
 public interface ApplicationRepository extends JpaRepository<Application, Long> {
     long countByFreelancer(User freelancer);
     long countByFreelancerAndStatus(User freelancer, ApplicationStatus status);
-    List<Application> findByFreelancerOrderByCreatedAtDesc(User freelancer);
+    List<Application> findByFreelancerOrderByCreatedDateDesc(User freelancer);
     long countByJobIn(List<Job> jobs);
     long countByJobInAndStatus(List<Job> jobs, ApplicationStatus status);
 

@@ -8,8 +8,6 @@ import org.springframework.security.config.annotation.authentication.builders.Au
 import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
-import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
-import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
@@ -17,13 +15,23 @@ import vn.codegym.freelanceworkhub.service.UserService;
 
 @Configuration
 @EnableWebSecurity
-public class SecurityConfig extends WebSecurityConfigurerAdapter {
+public class SecurityConfig {
+
+    @Autowired
+    private UserService userService;
 
     @Bean
     public PasswordEncoder passwordEncoder() {
-        return new BCryptPasswordEncoder();
+        return new BCryptPasswordEncoder(10);
     }
 
+    @Bean
+    public AuthenticationManager authManager(HttpSecurity http, PasswordEncoder encoder) throws Exception {
+        return http.getSharedObject(AuthenticationManagerBuilder.class)
+                .userDetailsService(userService)
+                .passwordEncoder(encoder)
+                .and().build();
+    }
     @Bean
     public AuthenticationManager authenticationManager(AuthenticationConfiguration configuration) throws Exception {
         return configuration.getAuthenticationManager();
@@ -33,12 +41,13 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         http
                 .authorizeHttpRequests(auth -> auth
-                        .antMatchers("/login", "/register", "/css/**", "/js/**", "/images/**").permitAll()
+                        .antMatchers("/home","/login", "/register", "/css/**", "/js/**", "/images/**").permitAll()
                         .antMatchers("/admin/**").hasAuthority("ADMIN")
                         .antMatchers("/freelancer/**").hasAuthority("FREELANCER")
                         .antMatchers("/employer/**").hasAuthority("EMPLOYER")
                         .anyRequest().authenticated()
                 )
+
                 .formLogin(form -> form
                         .loginPage("/login")
                         .defaultSuccessUrl("/home", true)
@@ -52,5 +61,3 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         return http.build();
     }
 }
-
-

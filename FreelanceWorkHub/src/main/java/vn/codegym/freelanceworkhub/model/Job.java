@@ -1,3 +1,4 @@
+
 package vn.codegym.freelanceworkhub.model;
 
 import lombok.AllArgsConstructor;
@@ -6,6 +7,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import javax.persistence.*;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -18,7 +20,7 @@ import java.util.List;
 public class Job {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private long id;
+    private Long id;
 
     @ManyToOne
     @JoinColumn(name = "employer_id")
@@ -38,9 +40,12 @@ public class Job {
     @Enumerated(EnumType.STRING)
     private JobStatus status;
 
-    private Date createdDate;
+    private LocalDate createdDate;
+
+    private String location;
 
     @OneToMany(mappedBy = "job", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Application> applications = new ArrayList<>();
+
 
 }

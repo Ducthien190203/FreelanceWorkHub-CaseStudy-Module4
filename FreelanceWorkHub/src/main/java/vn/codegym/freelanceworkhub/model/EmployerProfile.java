@@ -18,7 +18,7 @@ public class EmployerProfile {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
-//    private String companyName;
+    private String companyName;
     @Lob
     @Column(columnDefinition = "TEXT")
     private String companyDescription;

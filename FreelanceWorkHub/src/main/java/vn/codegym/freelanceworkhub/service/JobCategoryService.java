@@ -1,3 +1,4 @@
+
 package vn.codegym.freelanceworkhub.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,5 +23,10 @@ public class JobCategoryService {
     }
     public void delete(Long id) {
         jobCategoryRepository.deleteById(id);
+    }
+
+    public JobCategory findByNameContains(String name) {
+
+        return jobCategoryRepository.findByNameContains(name);
     }
 }

@@ -1,40 +1,31 @@
 package vn.codegym.freelanceworkhub.config;
 
+import org.springframework.web.filter.CharacterEncodingFilter;
 import org.springframework.web.servlet.support.AbstractAnnotationConfigDispatcherServletInitializer;
 
-import org.springframework.web.filter.CharacterEncodingFilter;
 import javax.servlet.Filter;
 
 public class AppInitializer extends AbstractAnnotationConfigDispatcherServletInitializer {
-
-    // Khởi tạo các cấu hình "root" như AppConfig (DB, Hibernate...)
     @Override
     protected Class<?>[] getRootConfigClasses() {
-        return new Class[]{
-                AppConfig.class,
-                SecurityConfig.class
-        };
+        return new Class[]{AppConfig.class};
     }
 
-    // Khởi tạo cấu hình Web MVC
     @Override
     protected Class<?>[] getServletConfigClasses() {
-        return new Class[]{
-                WebMvcConfig.class
-        };
+        return new Class[]{};
     }
 
-    // Cấu hình DispatcherServlet mapping
     @Override
     protected String[] getServletMappings() {
-        return new String[]{"/"};
+        return new String[]{"/home"};
     }
 
     @Override
     protected Filter[] getServletFilters() {
-        CharacterEncodingFilter characterEncodingFilter = new CharacterEncodingFilter();
-        characterEncodingFilter.setEncoding("UTF-8");
-        characterEncodingFilter.setForceEncoding(true);
-        return new Filter[] { characterEncodingFilter };
+        CharacterEncodingFilter filter = new CharacterEncodingFilter();
+        filter.setEncoding("UTF-8");
+        filter.setForceEncoding(true);
+        return new Filter[]{filter};
     }
 }
